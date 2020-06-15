@@ -10,7 +10,7 @@
 // * For correct passing of all tests don't use print and println methods in your code.
 
 
-class Point{
+class Point {
     private int x;
     private int y;
 
@@ -28,10 +28,10 @@ class Point{
     }
 
     public double distance(Point point) {
-        return Math.sqrt(Math.pow(point.x - x, 2) + Math.pow(point.y - y, 2));
+        return distance(point.x, point.y);
     }
 
-    public double distance(){
-        return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+    public double distance() {
+        return distance(0, 0);
     }
 }
