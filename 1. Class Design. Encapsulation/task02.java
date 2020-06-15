@@ -27,3 +27,17 @@
                 employeesInfo += "]";
             }
         }
+
+class Employee {
+    public String fullName;
+    public float salary;
+
+    public Employee(){
+
+    }
+
+    public Employee(String fullName, float salary) {
+        this.fullName = fullName;
+        this.salary = salary;
+    }
+}
