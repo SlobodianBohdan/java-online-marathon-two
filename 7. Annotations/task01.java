@@ -27,7 +27,6 @@ import java.lang.reflect.Field;
 public class Task01 {
     public static void main(String[] args) throws NoSuchFieldException {
         CheckCamelCase.checkAndPrint(ClassForAnnot.class);
-        System.out.println();
     }
 }
 
