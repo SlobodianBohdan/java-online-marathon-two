@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -33,18 +34,24 @@ public class ProgressServiceImpl implements ProgressService{
     }
 
     @Override
+    @Transactional
     public Progress getProgressById(Long idProgress) {
         return findByIdOrThrowException(progressRepository, idProgress);
+//        return progressRepository.findById(id).orElseThrow(() ->
+//        new EntityNotFoundException(("No Progress exist for given id")));
     }
 
     @Override
     public Progress addTaskForStudent(Task task, User user) {
         findByIdOrThrowException(userRepository, user.getId());
         Task createdTask = taskRepository.save(task);
-        Progress progress = new Progress();
-        progress.setStatus(TaskStatus.PENDING);
-        progress.setTask(createdTask);
-        progress.setTrainee(user);
+
+        Progress progress = Progress.builder()
+                .status(TaskStatus.PENDING)
+                .task(createdTask)
+                .trainee(user)
+                .build();
+
         return progressRepository.save(progress);
 
     }

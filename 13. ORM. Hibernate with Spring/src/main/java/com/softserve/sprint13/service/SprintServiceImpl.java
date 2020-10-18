@@ -5,6 +5,7 @@ import com.softserve.sprint13.entity.Sprint;
 import com.softserve.sprint13.exception.EntityNotFoundException;
 import com.softserve.sprint13.repository.MarathonRepository;
 import com.softserve.sprint13.repository.SprintRepository;
+import com.sun.istack.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
@@ -30,8 +31,9 @@ public class SprintServiceImpl implements SprintService {
     }
 
     @Override
-    public boolean addSprintToMarathon(Sprint sprint, Marathon marathon) {
+    public boolean addSprintToMarathon(Sprint sprint, @NotNull Marathon marathon) {
         try {
+            findByIdOrThrowException(sprintRepository, sprint.getId());
             findByIdOrThrowException(marathonRepository, marathon.getId());
             sprint.setMarathon(marathon);
             sprintRepository.save(sprint);
@@ -59,8 +61,7 @@ public class SprintServiceImpl implements SprintService {
 
     @Override
     public Sprint create(Sprint sprint) {
-        Sprint newSprint = sprintRepository.save(sprint);
-        return newSprint;
+        return sprintRepository.save(sprint);
     }
 
     private <T> T findByIdOrThrowException(JpaRepository<T, Long> repository, Long id) {

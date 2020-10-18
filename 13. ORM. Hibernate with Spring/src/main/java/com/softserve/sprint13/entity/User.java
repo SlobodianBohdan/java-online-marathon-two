@@ -7,7 +7,6 @@ import javax.persistence.*;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.List;
-import java.util.Objects;
 
 @Entity
 @Builder
@@ -16,6 +15,7 @@ import java.util.Objects;
 @Table(name = "users")
 @Getter
 @Setter
+@ToString
 public class User {
     public enum Role {
         MENTOR, TRAINEE
@@ -25,13 +25,11 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-   // @Pattern(regexp = ".+@.+\\..+", message = "Please provide a valid email address")
+    // @Pattern(regexp = ".+@.+\\..+", message = "Please provide a valid email address")
     @Pattern(regexp = "[_a-zA-Z0-9\\-]+@[a-z]+.[a-z]{2,3}", message = "Please provide a valid email address")
-    @Column(name = "email")
     private String email;
 
     @Size(min = 2, max = 20, message = "First name must be between 2 and 20 characters")
-    @Column(name = "first_name")
     private String firstName;
 
 
@@ -46,13 +44,8 @@ public class User {
     private Role role;
 
     @ToString.Exclude
-    @ManyToMany(cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE
-    })
-    @JoinTable(name = "marathon_user", joinColumns = {@JoinColumn(name = "user_id")},//type of relation, joinColumns with id
-            inverseJoinColumns = {@JoinColumn(name = "marathon_id")})
-    private List<Marathon> marathonUsers;
+    @ManyToMany(mappedBy = "users")
+    private List<Marathon> marathons;
 
     @Override
     public String toString() {
@@ -75,18 +68,16 @@ public class User {
                 getFirstName().equals(user.getFirstName()) &&
                 getLastName().equals(user.getLastName()) &&
                 getPassword().equals(user.getPassword()) &&
-                getRole() == user.getRole() &&
-                getMarathonUsers().equals(user.getMarathonUsers());
+                getRole() == user.getRole();
     }
 
     @Override
     public int hashCode() {
-        return 31 * (int)(getId() +
-                + (getEmail() != null ? getEmail().hashCode() : 0) +
-                + (getFirstName() != null ? getFirstName().hashCode() : 0) +
-                + (getLastName() != null ? getLastName().hashCode() : 0) +
-                + (getPassword() != null ? getPassword().hashCode() : 0) +
-                + (getRole() != null ? getRole().hashCode() : 0) +
-                + (getMarathonUsers() != null ? getMarathonUsers().hashCode() : 0));
+        return 31 * (int) (getId() +
+                +(getEmail() != null ? getEmail().hashCode() : 0) +
+                +(getFirstName() != null ? getFirstName().hashCode() : 0) +
+                +(getLastName() != null ? getLastName().hashCode() : 0) +
+                +(getPassword() != null ? getPassword().hashCode() : 0) +
+                +(getRole() != null ? getRole().hashCode() : 0));
     }
 }

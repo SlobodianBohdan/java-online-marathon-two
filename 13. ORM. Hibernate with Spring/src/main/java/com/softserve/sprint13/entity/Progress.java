@@ -9,6 +9,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Objects;
 
 
 @Data
@@ -57,4 +58,22 @@ public class Progress {
                 '}';
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Progress)) return false;
+        Progress progress = (Progress) o;
+        return getId().equals(progress.getId()) &&
+                getStatus() == progress.getStatus() &&
+                getTask().equals(progress.getTask()) &&
+                getTrainee().equals(progress.getTrainee());
+    }
+
+    @Override
+    public int hashCode() {
+        return 31 * (int)(getId()
+                + (getStatus() != null ? getStatus().hashCode() : 0)
+                + (getTask() != null ? getTask().hashCode() : 0)
+                + (getTrainee() != null ? getTrainee().hashCode() : 0));
+    }
 }

@@ -2,48 +2,37 @@ package com.softserve.sprint13.entity;
 
 import com.sun.istack.NotNull;
 import lombok.*;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode
+@ToString(exclude = {"sprints", "users"})
 @Table(name = "marathon")
 public class Marathon {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "title")
     @NotNull
     private String title;
 
-    @ManyToMany(mappedBy = "marathonUsers")
-    @Fetch(value = FetchMode.SUBSELECT)
-    List<User> users;
+    @EqualsAndHashCode.Exclude
+    @ManyToMany(cascade={CascadeType.PERSIST}, fetch = FetchType.EAGER)
+    @JoinTable(
+            name="marathon_user", joinColumns=@JoinColumn(name="marathon_id"),
+            inverseJoinColumns=@JoinColumn(name="user_id")
+    )
+    private Set<User> users = new LinkedHashSet<>();
 
-    @Override
-    public String toString() {
-        return "Marathon{" +
-                "title='" + title +
-                "'}";
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Marathon)) return false;
-        Marathon marathon = (Marathon) o;
-        return getTitle().equals(marathon.getTitle());
-    }
-
-    @Override
-    public int hashCode() {
-        return 31 * (getTitle() != null ? getTitle().hashCode() : 0);
-    }
+    @EqualsAndHashCode.Exclude
+    @OneToMany(mappedBy = "marathon")
+    private List<Sprint> sprints;
 }

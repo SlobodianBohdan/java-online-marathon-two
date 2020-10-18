@@ -1,15 +1,13 @@
 package com.softserve.sprint13.entity;
 
 import com.sun.istack.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 @Data
 @Entity
@@ -49,8 +47,19 @@ public class Sprint {
                 ", finish=" + finish +
                 ", start_date=" + startDate +
                 ", title='" + title + '\'' +
-                ", marathonId=" + marathon.getId() +
                 '}';
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Sprint)) return false;
+        Sprint sprint = (Sprint) o;
+        return getTitle().equals(sprint.getTitle());
+    }
+
+    @Override
+    public int hashCode() {
+        return 31 * (getTitle() != null ? getTitle().hashCode() : 0);
+    }
 }

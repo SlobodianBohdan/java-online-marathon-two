@@ -11,6 +11,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 @Data
 @Entity
@@ -48,9 +49,19 @@ public class Task {
                 "id=" + id +
                 ", created=" + created +
                 ", title='" + title + '\'' +
-                ", updated=" + updated +
-                ", sprintId=" + sprint.getId() +
                 '}';
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Task)) return false;
+        Task task = (Task) o;
+        return getTitle().equals(task.getTitle());
+    }
+
+    @Override
+    public int hashCode() {
+        return 31 * (getTitle() != null ? getTitle().hashCode() : 0);
+    }
 }

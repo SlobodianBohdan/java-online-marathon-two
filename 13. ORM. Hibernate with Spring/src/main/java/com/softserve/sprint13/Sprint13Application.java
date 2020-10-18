@@ -45,8 +45,8 @@ public class Sprint13Application{
             System.out.println("*** START MAIN ***");
             System.out.println("***=== THE FIRST PART ===***");
             try {
-                Marathon marathon1 = Marathon.builder().title("JOM_1").build();
-                Marathon marathon2 = Marathon.builder().title("JOM_2").build();
+                Marathon marathon1 = Marathon.builder().title("Java Marathon_1").build();
+                Marathon marathon2 = Marathon.builder().title("Java Marathon_2").build();
 
                 marathon1 = marathonService.createOrUpdate(marathon1);
                 marathon2 = marathonService.createOrUpdate(marathon2);
@@ -107,15 +107,18 @@ public class Sprint13Application{
                         .title("Sprint 2")
                         .build();
 
-                //2.save sprints --> addSprintToMarathon
+                //2.created and save sprints --> addSprintToMarathon
+
+                sprintService.create(sprint1);
+                sprintService.create(sprint2);
 
                 sprintService.addSprintToMarathon(sprint1, marathon1);
-                sprintService.addSprintToMarathon(sprint2, marathon2);
+                sprintService.addSprintToMarathon(sprint2, marathon1);
 
                 //3. create 2 task and save ---> addTaskToSprint
 
-                Task task1 = Task.builder().title("task1").sprint(sprint1).build();
-                Task task2 = Task.builder().title("task2").sprint(sprint1).build();
+                Task task1 = Task.builder().title("task1").build();
+                Task task2 = Task.builder().title("task2").build();
 
                 //4.create 3 progresses and save --> addTaskForStudent
 
@@ -140,6 +143,7 @@ public class Sprint13Application{
 
                 //7. All methods with TaskService!
                 taskService.addTaskToSprint(task1, sprint1);
+                taskService.addTaskToSprint(task2, sprint2);
                 taskService.getTaskById(task1.getId());
 
             } catch (ConstraintViolationException e) {
@@ -150,4 +154,3 @@ public class Sprint13Application{
         };
     }
 }
-
