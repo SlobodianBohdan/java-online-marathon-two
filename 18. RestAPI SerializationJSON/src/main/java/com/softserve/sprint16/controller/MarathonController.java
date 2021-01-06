@@ -45,20 +45,20 @@ public class MarathonController {
         return "marathons";
     }
 
-    @PreAuthorize("hasAuthority('MENTOR') or isAnonymous()")
+    @PreAuthorize("hasAuthority('MENTOR')")
     @GetMapping("/marathons/edit/{id}")
     public String editMarathonForm(@PathVariable("id") Long id, Model model) {
         model.addAttribute("marathon", marathonService.getMarathonById(id));
         return "editMarathon";
     }
 
-    @PreAuthorize("hasAuthority('MENTOR') or isAnonymous()")
+    @PreAuthorize("hasRole('MENTOR')")
     @GetMapping("/marathons/create")
     public String createMarathonForm(Model model) {
         return "create";
     }
 
-    @PreAuthorize("hasAuthority('MENTOR') or isAnonymous()")
+    @PreAuthorize("hasRole('MENTOR')")
     @PostMapping("/marathons/edit")
     public String editMarathon(@ModelAttribute("marathon") Marathon marathon) {
         marathonService.createOrUpdate(marathon);
@@ -66,7 +66,7 @@ public class MarathonController {
     }
 
 
-    @PreAuthorize("hasAuthority('MENTOR') or isAnonymous()")
+    @PreAuthorize("hasRole('MENTOR')")
     @PostMapping("/marathons/create")
     public String createMarathons(@ModelAttribute("marathon") MarathonDto marathon) {
         try {
@@ -77,7 +77,7 @@ public class MarathonController {
         return "redirect:/marathons";
     }
 
-    @PreAuthorize("hasAuthority('MENTOR') or isAnonymous()")
+    @PreAuthorize("hasAuthority('MENTOR')")
     @GetMapping("/marathons/delete/{id}")
     public String deleteMarathons(@PathVariable("id") Long id) {
         marathonService.deleteMarathonById(id);

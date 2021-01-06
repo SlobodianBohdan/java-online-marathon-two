@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      sec:authorize="isAuthenticated()">
 <div th:replace="~{/fragments :: js-lb}"></div>
 <div th:replace="~{/fragments :: header}"></div>
 <div th:replace="~{/fragments :: navbar}"></div>
 <body>
 <div>
-    <form th:id="marathon" th:action="@{/marathons/edit}" th:object="${marathon}" method="post">
+    <form th:id="marathon" th:action="@{/marathons/edit}" th:object="${marathon}" method="post" sec:authorize="hasAuthority('MENTOR')">
         <h3>Marathon info</h3>
         <fieldset>
             <label>Id:</label>

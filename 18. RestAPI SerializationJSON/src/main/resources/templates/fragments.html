@@ -1,5 +1,6 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      sec:authorize="isAuthenticated()">
 <head th:fragment="header">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link href="/static/css/main.css" rel="stylesheet">
@@ -7,6 +8,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
 </head>
+
 <body>
 <nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-dark bg-dark" style="background-color: #ededed;">
 
@@ -23,7 +25,7 @@
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLinkADD">
                     <a class="dropdown-item" href="/marathons">Show</a>
-                    <a class="dropdown-item" href="/marathons/create">Create</a>
+                    <a class="dropdown-item" href="/marathons/create" sec:authorize="hasAuthority('MENTOR')">Create</a>
                 </div>
             </li>
             <li class="nav-item dropdown">
@@ -33,12 +35,13 @@
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                     <a class="dropdown-item" href="/students">Show</a>
-                    <a class="dropdown-item" href="/students/register">Registration</a>
+                    <a class="dropdown-item" href="/students/register" sec:authorize="hasAuthority('MENTOR')">Registration</a>
                 </div>
             </li>
         </ul>
         <div class="button" style='font-size:15px; margin-left:970px;'>
-            <a href='/logout' style='border:1px solid white; background: none; padding: 7px 15px; font-size: 17px; color:lightskyblue;'>LogOut</a>
+            <a href='/logout'
+               style='border:1px solid white; background: none; padding: 7px 15px; font-size: 17px; color:lightskyblue;'>LogOut</a>
         </div>
     </div>
 </nav>

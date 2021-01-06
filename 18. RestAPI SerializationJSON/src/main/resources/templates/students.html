@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      sec:authorize="isAuthenticated()">
 <div th:replace="~{/fragments :: js-lb}"></div>
 <div th:replace="~{/fragments :: header}"></div>
 <div th:replace="~{/fragments :: navbar}"></div>
@@ -10,7 +12,7 @@
     <tr>
         <th scope="col" > Id</th>
         <th scope="col" > Name</th>
-        <span th:if="${!add}">
+        <span th:if="${!add}" sec:authorize="hasAuthority('MENTOR')">
         <th scope="col"> Edit</th>
         <th scope="col" > Remove</th>
             <th scope="col" > Add marathon</th>
@@ -27,7 +29,7 @@
             <a th:href="@{/students}" th:text="${student.getFirstName() + ' ' + student.getLastName()}"> First
                 name</a>
         </td>
-        <span th:if="${!add}">
+        <span th:if="${!add}" sec:authorize="hasAuthority('MENTOR')">
         <td>
             <a th:href="@{/students/edit/{id}(id = ${student.id})}"> Edit </a>
         </td>

@@ -10,6 +10,7 @@ import com.softserve.sprint16.service.MarathonService;
 import com.softserve.sprint16.service.UserService;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
@@ -55,11 +56,13 @@ public class StudentController {
             throw new EntityNotFoundException();
     }
 
+    @PreAuthorize("hasAuthority('MENTOR')")
     @GetMapping("/students/register")
     public String registerStudentForm() {
         return "register";
     }
 
+    @PreAuthorize("hasAuthority('MENTOR')")
     @PostMapping("/students/register")
     public String registerStudent(@ModelAttribute("user") UserDto user) {
         try {
@@ -71,30 +74,36 @@ public class StudentController {
         return "redirect:/students";
     }
 
+    @PreAuthorize("hasAuthority('MENTOR')")
     @GetMapping("/students/{marathon_id}/delete/{student_id}")
     public String deleteStudentByIdFromMarathon(@PathVariable("marathon_id") Long marathon_id,
                                  @PathVariable("student_id") Long student_id) {
         userService.deleteUserByIdFromMarathon(student_id,marathon_id);
         return "redirect:/students";
     }
+
+    @PreAuthorize("hasAuthority('MENTOR')")
     @GetMapping("/students/delete/{student_id}")
     public String deleteStudents(@PathVariable("student_id") Long student_id) {
         userService.deleteUserById(student_id);
         return "redirect:/students";
     }
 
+    @PreAuthorize("hasAuthority('MENTOR')")
     @GetMapping("/students/edit/{id}")
     public String editStudentForm(@PathVariable("id") Long id, Model model) {
         model.addAttribute("student", userService.getUserById(id));
         return "editStudent";
     }
 
+    @PreAuthorize("hasAuthority('MENTOR')")
     @PostMapping("/students/edit")
     public String editStudent(@ModelAttribute("student") User user) {
         userService.createOrUpdateUser(user);
         return "redirect:/students";
     }
 
+    @PreAuthorize("hasAuthority('MENTOR')")
     @GetMapping("/students/{marathon_id}/add/{student_id}")
     public String addStudentToMarathon(@PathVariable("marathon_id") Long marathon_id,
                                @PathVariable("student_id") Long student_id) {
@@ -103,6 +112,8 @@ public class StudentController {
         userService.addUserToMarathon(student, marathon);
         return "redirect:/marathons";
     }
+
+    @PreAuthorize("hasAuthority('MENTOR')")
     @GetMapping("/students/{marathon_id}/add")
     public String findStudentForAdd(@PathVariable("marathon_id") Long marathon_id, Model model) {
         Marathon marathon = marathonService.getMarathonById(marathon_id);
@@ -116,7 +127,7 @@ public class StudentController {
         return "students";
     }
 
-
+    @PreAuthorize("hasAuthority('MENTOR')")
     @GetMapping("/students/{student_id}/addMarathon")
     public String findMarathonForAdd(@PathVariable("student_id") Long student_id, Model model) {
         User student = userService.getUserById(student_id);
@@ -125,6 +136,8 @@ public class StudentController {
         model.addAttribute("add", true);
         return "marathons";
     }
+
+    @PreAuthorize("hasAuthority('MENTOR')")
     @GetMapping("/students/{student_id}/addMarathon/{marathon_id}")
     public String addMarathon(@PathVariable("marathon_id") Long marathon_id,
                               @PathVariable("student_id") Long student_id, Model model) {
